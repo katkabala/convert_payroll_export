@@ -9,7 +9,6 @@ from sortedcontainers import SortedDict
 def main(file_path):
     old_report = read_file(file_path)
     result_txt = "converted_payroll_export.txt"
-    # pozriet spolu clean
     clean_txt(result_txt)
     convert_report(old_report, result_txt)
 
