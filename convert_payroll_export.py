@@ -228,8 +228,8 @@ def convert_a_row_with_datum_in_different_months(key, row, new_report_rows):
         return new_report_rows
 
 
-def replace_text_on_index(row: str, start_index: int, new_text: str) -> str:
-    return row[0:start_index] + new_text + row[start_index+len(new_text):len(row)]
+def replace_text_on_index(text: str, start_index: int, new_text: str) -> str:
+    return text[0:start_index] + new_text + text[start_index+len(new_text):len(text)]
 
 
 def daysInMonth(input_year, input_month):
