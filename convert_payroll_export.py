@@ -228,6 +228,10 @@ def convert_a_row_with_datum_in_different_months(key, row, new_report_rows):
         return new_report_rows
 
 
+def add_text_on_index(text: str, start_index: int, new_part: str) -> str:
+    return text[0:start_index] + new_part + text[start_index:len(text)]
+
+
 def daysInMonth(input_year, input_month):
     # calculate days in month
     return calendar.monthrange(input_year, input_month)[1]
