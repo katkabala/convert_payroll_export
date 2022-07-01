@@ -9,7 +9,7 @@ from sortedcontainers import SortedDict
 def main(file_path):
     old_report = read_file(file_path)
     result_txt = "converted_payroll_export.txt"
-    clean_txt(result_txt)
+    clean_file(result_txt)
     convert_report(old_report, result_txt)
 
 
@@ -20,11 +20,9 @@ def read_file(file_path: str) -> list:
         return lines
 
 
-def clean_txt (file):
+def clean_file(file):
     # clean txt file or create new file if file not exist
-    file1 = open(file, 'w+')
-    file1.writelines("")
-    file1.close()
+    open(file, "w").close()
 
 
 def convert_report(old_report, result_txt):
@@ -47,17 +45,17 @@ def convert_report(old_report, result_txt):
         index = row[1:17]
         if index != actual_index:
 
-            convert_rows_and_write_result(old_report_rows, result_txt)
+            convert_rows_and_write_results(old_report_rows, result_txt)
             old_report_rows = SortedDict()
             actual_index = index
             old_report_rows[key] = row
         else:
             old_report_rows[key] = row
 
-    convert_rows_and_write_result(old_report_rows, result_txt)
+    convert_rows_and_write_results(old_report_rows, result_txt)
 
 
-def convert_rows_and_write_result(old_report_rows, result_txt):
+def convert_rows_and_write_results(old_report_rows, result_txt):
     new_report_rows = SortedDict()
     for key in old_report_rows:
         row = old_report_rows[key]
@@ -75,7 +73,7 @@ def convert_rows_and_write_result(old_report_rows, result_txt):
         else:
             new_report_rows[key] = "INCORRECT ROW: row[0] is NOT 'A' or 'B'"
 
-    write_result_to_txt(result_txt, new_report_rows)
+    write_results(result_txt, new_report_rows)
 
 
 def convert_b_row(key, row, new_report_rows):
@@ -229,7 +227,11 @@ def convert_a_row_with_datum_in_different_months(key, row, new_report_rows):
 
 
 def replace_text_on_index(text: str, start_index: int, new_text: str) -> str:
-    return text[0:start_index] + new_text + text[start_index+len(new_text):len(text)]
+    return text[:start_index] + new_text + text[start_index+len(new_text):]
+
+
+def add_text_on_index(text: str, start_index: int, new_part: str) -> str:
+    return text[:start_index] + new_part + text[start_index:]
 
 
 def daysInMonth(input_year, input_month):
@@ -237,7 +239,7 @@ def daysInMonth(input_year, input_month):
     return calendar.monthrange(input_year, input_month)[1]
 
 
-def datum_in_right_format (datum):
+def datum_in_right_format(datum):
     # write datum as string in format YYMMDD
     return string_format_with_len(datum.year, 2)+string_format_with_len(datum.month, 2) + string_format_with_len(datum.day, 2)
 
@@ -251,12 +253,11 @@ def string_format_with_len(input, new_len):
     return output
 
 
-def write_result_to_txt(file, rows):
+def write_results(file, rows):
     # add new row to file
-    file1 = open(file, 'a')
-    for key in rows:
-        file1.writelines(rows[key])
-    file1.close()
+    with open(file, 'a') as f:
+        for key in rows:
+            f.writelines(rows[key])
 
 
 if __name__ == "__main__":
