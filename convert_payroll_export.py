@@ -22,8 +22,7 @@ def read_file(file_path: str) -> list:
 
 def clean_file(file):
     # clean txt file or create new file if file not exist
-    with open(file, 'w+') as f:
-        f.writelines("")
+    open(file, "w").close()
 
 
 def convert_report(old_report, result_txt):
